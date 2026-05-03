@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Puspendu Gorai — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+/* ─── RESET ─── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+img { display:block; max-width:100%; }
+a { text-decoration:none; }
+
+/* ─── THEMES ─── */
+:root {
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);
+  --radius: 14px;
+  --radius-sm: 8px;
+
+  /* dark defaults */
+  --bg: #060610;
+  --bg2: #0d0d1f;
+  --bg3: #13132a;
+  --surface: rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.08);
+  --border-accent: rgba(139,92,246,0.4);
+  --text: #f0f0ff;
+  --text2: rgba(200,200,230,0.75);
+  --text3: rgba(160,160,200,0.55);
+  --accent: #8b5cf6;
+  --accent2: #38bdf8;
+  --accent3: #34d399;
+  --accent4: #f59e0b;
+  --grad: linear-gradient(135deg, #8b5cf6 0%, #38bdf8 50%, #34d399 100%);
+  --grad2: linear-gradient(135deg, #8b5cf6, #38bdf8);
+  --shadow: 0 0 40px rgba(139,92,246,0.15);
+  --card-bg: rgba(13,13,31,0.9);
+}
+[data-theme="light"] {
+  --bg: #f8f7ff;
+  --bg2: #f0effe;
+  --bg3: #e8e5fd;
+  --surface: rgba(139,92,246,0.06);
+  --surface-hover: rgba(139,92,246,0.1);
+  --border: rgba(139,92,246,0.15);
+  --border-accent: rgba(139,92,246,0.4);
+  --text: #1a1040;
+  --text2: #4a4070;
+  --text3: #8070b0;
+  --accent: #7c3aed;
+  --accent2: #0284c7;
+  --accent3: #059669;
+  --accent4: #d97706;
+  --grad: linear-gradient(135deg, #7c3aed 0%, #0284c7 50%, #059669 100%);
+  --grad2: linear-gradient(135deg, #7c3aed, #0284c7);
+  --shadow: 0 4px 40px rgba(124,58,237,0.12);
+  --card-bg: rgba(255,255,255,0.95);
+}
+
+/* ─── BASE ─── */
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  transition: background 0.4s var(--ease), color 0.4s var(--ease);
+  overflow-x: hidden;
+}
+
+/* ─── PARTICLE CANVAS ─── */
+#bg-canvas {
+  position: fixed; top:0; left:0;
+  width:100%; height:100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity 0.4s;
+}
+[data-theme="light"] #bg-canvas { opacity: 0.3; }
+
+/* ─── LAYOUT ─── */
+.wrap { position:relative; z-index:2; }
+
+/* ─── NAV ─── */
+#nav {
+  position: fixed; top:0; left:0; right:0;
+  z-index: 1000;
+  display: flex; align-items:center; justify-content:space-between;
+  padding: 14px 40px;
+  background: rgba(6,6,16,0.7);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.4s;
+}
+[data-theme="light"] #nav { background: rgba(248,247,255,0.8); }
+
+.nav-logo {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 800;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.nav-links { display:flex; align-items:center; gap:28px; }
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-links a.active {
+  color: var(--accent);
+  position: relative;
+}
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--grad2);
+  animation: nav-underline-in 0.3s var(--ease) forwards;
+}
+@keyframes nav-underline-in {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+.nav-right { display:flex; align-items:center; gap:12px; }
+
+/* Theme Toggle */
+#theme-btn {
+  width: 44px; height: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s, border-color 0.3s;
+}
+#theme-btn::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  top: 2px; left: 3px;
+  background: var(--accent);
+  transition: transform 0.3s var(--ease), background 0.3s;
+}
+[data-theme="light"] #theme-btn::after { transform: translateX(20px); }
+.theme-icon {
+  position: absolute; top: 50%; transform:translateY(-50%);
+  font-size: 10px; line-height:1;
+}
+.theme-icon.moon { right: 5px; }
+.theme-icon.sun  { left:  5px; }
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 100px 24px 60px;
+  position: relative;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+  pointer-events: none;
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+@keyframes pulse-glow { 0%,100%{transform:scale(1);opacity:0.6} 50%{transform:scale(1.15);opacity:1} }
+
+.avatar-wrap {
+  position: relative; width: 150px; height: 150px;
+  margin-bottom: 36px;
+}
+.avatar-ring {
+  position: absolute; inset: -10px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #8b5cf6, #38bdf8, #34d399, #f59e0b, #f43f5e, #8b5cf6);
+  animation: spin 5s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.avatar-border {
+  position: absolute; inset: -3px;
+  border-radius: 50%;
+  background: var(--bg);
+}
+.avatar-img {
+  position: relative; z-index:1;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: var(--bg3);
+  display: flex; align-items:center; justify-content:center;
+  font-family: var(--font-head);
+  font-size: 52px; font-weight: 800;
+  color: var(--accent);
+  overflow: hidden;
+}
+.avatar-img img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border-accent);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12px; color: var(--accent); font-weight:500;
+  margin-bottom: 20px;
+  animation: badge-in 0.6s var(--ease) 0.2s both;
+}
+@keyframes badge-in { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+.badge-dot { width:6px;height:6px;border-radius:50%;background:var(--accent3);animation:blink 1.5s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero-name {
+  font-family: var(--font-head);
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 800;
+  line-height: 1.0;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  animation: hero-in 0.8s var(--ease) 0.1s both;
+}
+@keyframes hero-in { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:none} }
+.hero-title {
+  font-size: 16px; color: var(--text2);
+  letter-spacing: 0.06em; margin-bottom: 12px;
+  animation: hero-in 0.8s var(--ease) 0.2s both;
+}
+.hero-bio {
+  font-size: 15px; color: var(--text3); max-width: 520px;
+  margin: 0 auto 32px;
+  animation: hero-in 0.8s var(--ease) 0.3s both;
+}
+
+.hero-stats {
+  display: flex; gap: 40px; justify-content: center;
+  margin-bottom: 36px; flex-wrap: wrap;
+  animation: hero-in 0.8s var(--ease) 0.4s both;
+}
+.stat { text-align:center; }
+.stat-n {
+  font-family: var(--font-head);
+  font-size: 32px; font-weight: 800;
+  background: var(--grad2);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.stat-l { font-size: 10px; color: var(--text3); letter-spacing:.12em; text-transform:uppercase; }
+
+.hero-btns {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  animation: hero-in 0.8s var(--ease) 0.5s both;
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex; align-items:center; gap:8px;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 14px; font-weight:500;
+  cursor: pointer; border:none;
+  font-family: var(--font-body);
+  position: relative; overflow: hidden;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s;
+}
+.btn:hover { transform: translateY(-3px) scale(1.03); }
+.btn-primary {
+  background: var(--grad2);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(139,92,246,0.4);
+}
+.btn-primary:hover { box-shadow: 0 8px 32px rgba(139,92,246,0.6); }
+.btn-outline {
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--border-accent);
+}
+.btn-outline:hover { background: var(--surface); }
+.btn-ripple {
+  position: absolute; border-radius:50%;
+  background: rgba(255,255,255,0.3);
+  width:8px; height:8px;
+  transform: scale(0);
+  animation: ripple 0.65s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes ripple { to{transform:scale(25);opacity:0;} }
+
+/* ─── SECTIONS ─── */
+section { padding: 90px 24px; max-width: 960px; margin: 0 auto; }
+.sec-head { text-align:center; margin-bottom: 52px; }
+.sec-tag {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--border-accent);
+  border-radius: 999px;
+  padding: 4px 14px; font-size: 11px;
+  color: var(--accent); letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: 12px;
+  font-weight: 500;
+}
+.sec-title {
+  font-family: var(--font-head);
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 800;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.sec-sub { font-size: 14px; color: var(--text3); max-width: 400px; margin: 0 auto; }
+.sec-line {
+  width:50px; height:3px;
+  background: var(--grad2); border-radius:2px;
+  margin: 14px auto 0;
+}
+
+/* ─── REVEAL ─── */
+.reveal { opacity:0; transform:translateY(36px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+.reveal.vis { opacity:1; transform:none; }
+
+/* ─── SKILLS ─── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 14px;
+}
+.skill-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 12px; text-align:center;
+  cursor:default;
+  transition: transform 0.2s var(--ease), border-color 0.2s, box-shadow 0.2s;
+}
+.skill-card:hover {
+  transform: translateY(-6px) rotate(-1deg);
+  border-color: var(--border-accent);
+  box-shadow: 0 12px 28px rgba(139,92,246,0.2);
+}
+.sk-icon { font-size:26px; margin-bottom:8px; }
+.sk-name { font-size:11px; color:var(--text2); font-weight:500; }
+
+/* ─── PROJECTS ─── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+.proj-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s, border-color 0.25s;
+  display: flex; flex-direction:column; gap:10px;
+}
+.proj-card::before {
+  content:'';
+  position:absolute; top:0;left:0;right:0; height:2px;
+  background: var(--grad);
+  transform: scaleX(0); transform-origin:left;
+  transition: transform 0.3s var(--ease);
+}
+.proj-card:hover::before { transform:scaleX(1); }
+.proj-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 48px rgba(139,92,246,0.2);
+  border-color: var(--border-accent);
+}
+.proj-header { display:flex; align-items:center; gap:10px; }
+.proj-icon {
+  width:38px; height:38px; border-radius:10px;
+  background: var(--surface);
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.proj-name {
+  font-family: var(--font-head);
+  font-size:15px; font-weight:700; color:var(--text);
+  text-transform:capitalize;
+}
+.proj-desc { font-size:12px; color:var(--text3); line-height:1.65; flex:1; }
+.proj-tags { display:flex; flex-wrap:wrap; gap:5px; }
+.tag {
+  font-size:10px; padding:3px 9px; border-radius:999px;
+  background:rgba(139,92,246,0.12);
+  color:var(--accent); border:1px solid rgba(139,92,246,0.25);
+  font-weight:500;
+}
+.tag.lang { background:rgba(56,189,248,0.1); color:var(--accent2); border-color:rgba(56,189,248,0.25); }
+.proj-foot { display:flex; gap:14px; align-items:center; font-size:11px; color:var(--text3); margin-top:4px; }
+.proj-foot span { display:flex; align-items:center; gap:3px; }
+.proj-link {
+  margin-left:auto; font-size:11px; color:var(--accent);
+  display:flex; align-items:center; gap:4px; font-weight:500;
+}
+.proj-link:hover { text-decoration:underline; }
+
+/* ─── ACHIEVEMENTS ─── */
+.achieve-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+.ach-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(52,211,153,0.2);
+  border-radius: var(--radius);
+  padding: 24px 18px; text-align:center;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s, border-color 0.2s;
+}
+.ach-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(52,211,153,0.18);
+  border-color: rgba(52,211,153,0.5);
+}
+.ach-icon { font-size:38px; margin-bottom:12px; display:block; }
+.ach-name {
+  font-family:var(--font-head); font-size:13px; font-weight:700;
+  color:var(--accent3); margin-bottom:5px;
+}
+.ach-desc { font-size:11px; color:var(--text3); line-height:1.6; }
+
+/* ─── LANGUAGES CHART ─── */
+.lang-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+.lang-title {
+  font-family:var(--font-head); font-size:15px; font-weight:700;
+  color:var(--text); margin-bottom:20px;
+}
+.lang-bar-wrap { margin-bottom:10px; }
+.lang-bar-top { display:flex; justify-content:space-between; margin-bottom:5px; font-size:12px; }
+.lang-bar-name { color:var(--text2); font-weight:500; }
+.lang-bar-pct { color:var(--text3); }
+.lang-bar-track {
+  height:5px; background:var(--border); border-radius:999px; overflow:hidden;
+}
+.lang-bar-fill {
+  height:100%; border-radius:999px;
+  transition: width 1.2s var(--ease);
+  width:0;
+}
+
+/* ─── CONTACT FORM ─── */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 36px;
+  align-items:start;
+}
+@media(max-width:680px){ .contact-layout{grid-template-columns:1fr;} }
+
+.contact-info { display:flex; flex-direction:column; gap:14px; }
+.contact-link-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display:flex; align-items:center; gap:14px;
+  cursor:pointer;
+  transition: transform 0.2s var(--ease), border-color 0.2s, box-shadow 0.2s;
+  text-decoration:none; color:inherit;
+}
+.contact-link-card:hover {
+  transform:translateX(5px);
+  border-color:var(--border-accent);
+  box-shadow:var(--shadow);
+}
+.cl-icon {
+  width:44px; height:44px; border-radius:12px;
+  background:var(--surface);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
+}
+.cl-label { font-size:11px; color:var(--text3); margin-bottom:2px; }
+.cl-val { font-size:13px; color:var(--text); font-weight:500; }
+
+/* FORM */
+.contact-form-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+.form-title {
+  font-family:var(--font-head); font-size:18px; font-weight:700;
+  color:var(--text); margin-bottom:20px;
+}
+.form-row { margin-bottom:16px; }
+.form-row label { display:block; font-size:12px; color:var(--text3); margin-bottom:6px; font-weight:500; letter-spacing:.04em; }
+.form-row input,
+.form-row textarea,
+.form-row select {
+  width:100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size:13px; font-family:var(--font-body);
+  color: var(--text);
+  outline:none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize:vertical;
+}
+.form-row input:focus,
+.form-row textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+}
+.form-2col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:480px){ .form-2col{grid-template-columns:1fr;} }
+
+#form-status {
+  font-size:13px; margin-top:10px;
+  padding:10px 14px; border-radius:var(--radius-sm);
+  display:none;
+}
+#form-status.success {
+  background:rgba(52,211,153,0.1); color:var(--accent3);
+  border:1px solid rgba(52,211,153,0.3); display:block;
+}
+#form-status.error {
+  background:rgba(239,68,68,0.1); color:#f87171;
+  border:1px solid rgba(239,68,68,0.3); display:block;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  text-align:center; padding:36px 24px;
+  border-top: 1px solid var(--border);
+  font-size:12px; color:var(--text3);
+}
+footer strong { color:var(--accent); }
+
+/* ─── SCROLL TO TOP ─── */
+#scroll-top {
+  position:fixed; bottom:28px; right:28px;
+  width:44px; height:44px; border-radius:50%;
+  background: var(--grad2);
+  border:none; cursor:pointer; color:#fff;
+  font-size:18px; display:flex; align-items:center; justify-content:center;
+  z-index:999; box-shadow: 0 4px 18px rgba(139,92,246,0.4);
+  opacity:0; transform:translateY(20px) scale(0.8);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events:none;
+}
+#scroll-top.show { opacity:1; transform:none; pointer-events:auto; }
+#scroll-top:hover { transform:translateY(-3px) scale(1.08); }
+
+/* ─── LOADER ─── */
+#loader {
+  position:fixed; inset:0;
+  background:var(--bg);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  z-index:9999; transition:opacity 0.7s var(--ease);
+}
+.loader-logo {
+  font-family:var(--font-head); font-size:36px; font-weight:800;
+  background:var(--grad); -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent; background-clip:text;
+  margin-bottom:24px;
+}
+.loader-bar {
+  width:220px; height:3px;
+  background:var(--border); border-radius:999px; overflow:hidden;
+}
+.loader-fill {
+  height:100%; width:0;
+  background:var(--grad2); border-radius:999px;
+  animation:load 1.4s var(--ease) forwards;
+}
+@keyframes load { to{width:100%;} }
+.loader-txt { font-size:12px; color:var(--text3); margin-top:12px; letter-spacing:.08em; }
+
+/* ─── MOBILE ─── */
+@media(max-width:640px){
+  #nav { padding:12px 20px; }
+  .nav-links { display:none; }
+  section { padding:60px 18px; }
+  .skills-grid { grid-template-columns:repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">PG</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-txt">Loading portfolio...</div>
+</div>
+
+<!-- BG CANVAS -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Puspendu Gorai</div>
+  <div class="nav-links">
+    <a data-section="hero"         onclick="goTo('hero')">Home</a>
+    <a data-section="skills"       onclick="goTo('skills')">Skills</a>
+    <a data-section="projects"     onclick="goTo('projects')">Projects</a>
+    <a data-section="achievements" onclick="goTo('achievements')">Achievements</a>
+    <a data-section="contact"      onclick="goTo('contact')">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a class="btn btn-outline" href="https://github.com/puspendugorai-coder" target="_blank" rel="noopener" style="padding:8px 18px;font-size:12px;">GitHub ↗</a>
+    <button id="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <span class="theme-icon moon">🌙</span>
+      <span class="theme-icon sun">☀️</span>
+    </button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-glow"></div>
+  <div class="avatar-wrap">
+    <div class="avatar-ring"></div>
+    <div class="avatar-border"></div>
+    <div class="avatar-img" id="avatar-el">PG</div>
+  </div>
+  <div class="hero-badge"><span class="badge-dot"></span>Available for opportunities</div>
+  <h1 class="hero-name" id="hero-name">Puspendu Gorai</h1>
+  <p class="hero-title" id="hero-title">Full Stack Developer · Open Source Enthusiast</p>
+  <p class="hero-bio" id="hero-bio">Passionate developer from West Bengal, India. Building impactful web experiences with modern technologies. Always learning, always shipping.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n" id="s-repos">—</div><div class="stat-l">Repos</div></div>
+    <div class="stat"><div class="stat-n" id="s-followers">—</div><div class="stat-l">Followers</div></div>
+    <div class="stat"><div class="stat-n" id="s-following">—</div><div class="stat-l">Following</div></div>
+  </div>
+  <div class="hero-btns">
+    <button class="btn btn-primary" onclick="btnRipple(event); goTo('projects')">View Projects ↓</button>
+    <button class="btn btn-outline" onclick="btnRipple(event); goTo('contact')">Contact Me</button>
+    <a class="btn btn-outline" href="https://github.com/puspendugorai-coder" target="_blank" rel="noopener" onclick="btnRipple(event)">GitHub Profile ↗</a>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills" class="reveal">
+  <div class="sec-head">
+    <div class="sec-tag">Expertise</div>
+    <h2 class="sec-title">Technical Skills</h2>
+    <p class="sec-sub">Technologies I work with to build great products</p>
+    <div class="sec-line"></div>
+  </div>
+  <div class="skills-grid" id="skills-grid"></div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="reveal">
+  <div class="sec-head">
+    <div class="sec-tag">Work</div>
+    <h2 class="sec-title">Featured Projects</h2>
+    <p class="sec-sub">All repositories pulled live from GitHub</p>
+    <div class="sec-line"></div>
+  </div>
+  <div class="projects-grid" id="projects-grid">
+    <div style="grid-column:1/-1;text-align:center;color:var(--text3);padding:48px;font-size:13px;">
+      <div style="width:36px;height:36px;border:2px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+      Fetching your repositories from GitHub...
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements" class="reveal">
+  <div class="sec-head">
+    <div class="sec-tag">Milestones</div>
+    <h2 class="sec-title">GitHub Achievements</h2>
+    <p class="sec-sub">Badges earned on the open source journey</p>
+    <div class="sec-line"></div>
+  </div>
+  <div class="achieve-grid" id="achieve-grid"></div>
+</section>
+
+<!-- LANGUAGES -->
+<section id="languages" class="reveal" style="padding-top:0;">
+  <div class="sec-head">
+    <div class="sec-tag">Analytics</div>
+    <h2 class="sec-title">Language Breakdown</h2>
+    <p class="sec-sub">Derived from public repositories</p>
+    <div class="sec-line"></div>
+  </div>
+  <div class="lang-section">
+    <div class="lang-title">Most used languages</div>
+    <div id="lang-bars"><div style="color:var(--text3);font-size:13px;">Loading...</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="reveal">
+  <div class="sec-head">
+    <div class="sec-tag">Reach out</div>
+    <h2 class="sec-title">Get in Touch</h2>
+    <p class="sec-sub">Open for collaborations, freelance & full-time roles</p>
+    <div class="sec-line"></div>
+  </div>
+  <div class="contact-layout">
+    <div class="contact-info" id="contact-links"></div>
+    <div class="contact-form-card">
+      <div class="form-title">Send a message ✉️</div>
+      <div class="form-2col">
+        <div class="form-row">
+          <label>Your name</label>
+          <input type="text" id="f-name" placeholder="John Doe" />
+        </div>
+        <div class="form-row">
+          <label>Your email</label>
+          <input type="email" id="f-email" placeholder="john@example.com" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Subject</label>
+        <input type="text" id="f-subject" placeholder="Project Collaboration / Job Opportunity..." />
+      </div>
+      <div class="form-row">
+        <label>Message</label>
+        <textarea id="f-msg" rows="5" placeholder="Hello Puspendu, I wanted to reach out about..."></textarea>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="sendMessage(event)">Send Message ↗</button>
+      <div id="form-status"></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<footer>
+  <p>Designed &amp; built by <strong>Puspendu Gorai</strong> &nbsp;·&nbsp; <span id="yr"></span></p>
+  <p style="margin-top:6px;">Data fetched live from the GitHub API &nbsp;·&nbsp; Hosted on GitHub Pages</p>
+</footer>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* ─── HELPERS ─── */
+const $ = id => document.getElementById(id);
+const GH = 'puspendugorai-coder';
+$('yr').textContent = new Date().getFullYear();
+
+function goTo(id) { $(id)?.scrollIntoView({behavior:'smooth'}); }
+
+function btnRipple(e) {
+  const b = e.currentTarget;
+  const r = document.createElement('div');
+  r.className = 'btn-ripple';
+  const rect = b.getBoundingClientRect();
+  r.style.left = (e.clientX - rect.left - 4) + 'px';
+  r.style.top  = (e.clientY - rect.top  - 4) + 'px';
+  b.appendChild(r);
+  setTimeout(()=>r.remove(), 700);
+}
+
+/* ─── THEME ─── */
+function toggleTheme() {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('pg-theme', next);
+}
+(function(){
+  const saved = localStorage.getItem('pg-theme') || 'dark';
+  document.documentElement.dataset.theme = saved;
+})();
+
+/* ─── PARTICLE BG ─── */
+const canvas = $('bg-canvas');
+const ctx = canvas.getContext('2d');
+let pts = [];
+function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
+for(let i=0;i<90;i++){
+  pts.push({
+    x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+    dx:(Math.random()-.5)*.35, dy:(Math.random()-.5)*.35,
+    r:Math.random()*1.4+.4,
+    h:Math.random()*60+220
+  });
+}
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pts.forEach((p,i)=>{
+    p.x+=p.dx; p.y+=p.dy;
+    if(p.x<0)p.x=canvas.width; if(p.x>canvas.width)p.x=0;
+    if(p.y<0)p.y=canvas.height; if(p.y>canvas.height)p.y=0;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`hsla(${p.h},75%,72%,0.45)`; ctx.fill();
+    for(let j=i+1;j<pts.length;j++){
+      const q=pts[j], dx=p.x-q.x, dy=p.y-q.y, d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){
+        ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+        ctx.strokeStyle=`hsla(260,70%,70%,${.06*(1-d/110)})`; ctx.lineWidth=.6; ctx.stroke();
+      }
+    }
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* ─── SCROLL REVEAL ─── */
+const revObs = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+/* ─── SCROLL SPY + SCROLL TOP ─── */
+const NAV_SECTIONS = ['hero','skills','projects','achievements','languages','contact'];
+const navLinks = document.querySelectorAll('.nav-links a[data-section]');
+
+function updateActiveNav() {
+  const mid = window.innerHeight * 0.35;
+  let current = NAV_SECTIONS[0];
+  NAV_SECTIONS.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top;
+    if (top <= mid) current = id;
+  });
+  navLinks.forEach(a => {
+    const sec = a.dataset.section;
+    const isActive = sec === current ||
+      (sec === 'achievements' && current === 'languages');
+    a.classList.toggle('active', isActive);
+  });
+  $('scroll-top').classList.toggle('show', scrollY > 400);
+}
+
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+updateActiveNav();
+
+/* ─── SKILLS DATA ─── */
+const SKILLS = [
+  {i:'🌐',n:'HTML5'},{i:'🎨',n:'CSS3'},{i:'⚡',n:'JavaScript'},
+  {i:'⚛️',n:'React'},{i:'🟢',n:'Node.js'},{i:'🐍',n:'Python'},
+  {i:'🐘',n:'PHP'},{i:'🗄️',n:'MySQL'},{i:'🍃',n:'MongoDB'},
+  {i:'🐙',n:'Git'},{i:'🐋',n:'Docker'},{i:'🔌',n:'REST API'},
+  {i:'📱',n:'Responsive'},{i:'💅',n:'Tailwind'},{i:'🔷',n:'TypeScript'},
+  {i:'☁️',n:'Vercel/GH'}
+];
+const sg = $('skills-grid');
+SKILLS.forEach(s=>{
+  sg.innerHTML+=`<div class="skill-card"><div class="sk-icon">${s.i}</div><div class="sk-name">${s.n}</div></div>`;
+});
+
+/* ─── ACHIEVEMENTS ─── */
+const ACHS = [
+  {i:'🏆',n:'YOLO',d:'Merged a PR without code review — bold moves only'},
+  {i:'🦈',n:'Pull Shark',d:'Opened pull requests that got merged into projects'},
+  {i:'👥',n:'Pair Extraordinaire',d:'Co-authored merged pull requests with teammates'},
+  {i:'⚡',n:'Quickdraw',d:'Closed an issue or PR within 5 minutes of opening'},
+  {i:'🌟',n:'Starstruck',d:'Created a repository that earned GitHub stars'},
+  {i:'🌍',n:'Public Contributor',d:'Actively contributing to open-source on GitHub'},
+  {i:'🐣',n:'First Commit',d:'Made that very first commit — every journey starts here'},
+  {i:'📅',n:'Consistent',d:'Maintained a regular contribution streak on GitHub'},
+];
+const ag = $('achieve-grid');
+ACHS.forEach(a=>{
+  ag.innerHTML+=`<div class="ach-card"><span class="ach-icon">${a.i}</span><div class="ach-name">${a.n}</div><div class="ach-desc">${a.d}</div></div>`;
+});
+
+/* ─── CONTACT LINKS ─── */
+const CONTACTS = [
+  {i:'🐙',l:'GitHub',v:'puspendugorai-coder',url:'https://github.com/puspendugorai-coder'},
+  {i:'📍',l:'Location',v:'West Bengal, India',url:null},
+  {i:'📧',l:'Email',v:'Via GitHub profile',url:'https://github.com/puspendugorai-coder'},
+  {i:'🤝',l:'Open To',v:'Collaborations & Roles',url:null},
+];
+const cl = $('contact-links');
+CONTACTS.forEach(c=>{
+  const tag = c.url ? 'a' : 'div';
+  cl.innerHTML+=`<${tag} class="contact-link-card" ${c.url?`href="${c.url}" target="_blank" rel="noopener"`:''}><div class="cl-icon">${c.i}</div><div><div class="cl-label">${c.l}</div><div class="cl-val">${c.v}</div></div></${tag}>`;
+});
+
+/* ─── CONTACT FORM ─── */
+function sendMessage(e) {
+  btnRipple(e);
+  const name = $('f-name').value.trim();
+  const email = $('f-email').value.trim();
+  const subject = $('f-subject').value.trim();
+  const msg = $('f-msg').value.trim();
+  const st = $('form-status');
+  if(!name||!email||!msg){
+    st.className='error'; st.textContent='Please fill in name, email and message.'; return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    st.className='error'; st.textContent='Please enter a valid email address.'; return;
+  }
+  /* Opens mailto — works as a static site with no backend */
+  const body = encodeURIComponent(`Hi Puspendu,\n\n${msg}\n\nFrom: ${name}\nEmail: ${email}`);
+  const sub = encodeURIComponent(subject || 'Portfolio Contact');
+  window.location.href = `mailto:?subject=${sub}&body=${body}`;
+  st.className='success';
+  st.textContent='✓ Opening your email client... message drafted successfully!';
+  $('f-name').value=''; $('f-email').value=''; $('f-subject').value=''; $('f-msg').value='';
+}
+
+/* ─── GITHUB API ─── */
+const LANG_COLORS = {
+  JavaScript:'#f1e05a', TypeScript:'#2b7489', Python:'#3572A5',
+  HTML:'#e34c26', CSS:'#563d7c', PHP:'#4F5D95',
+  Java:'#b07219', Go:'#00ADD8', Rust:'#dea584',
+  'C#':'#178600', 'C++':'#f34b7d', Ruby:'#701516',
+  Shell:'#89e051', Vue:'#41b883', default:'#8b5cf6'
+};
+const PROJECT_ICONS = ['📦','🚀','🌐','⚙️','🔧','🎯','💡','🛠️','📱','🔬','🎨','📊'];
+
+async function loadGitHub() {
+  try {
+    const [uRes, rRes] = await Promise.all([
+      fetch(`https://api.github.com/users/${GH}`),
+      fetch(`https://api.github.com/users/${GH}/repos?sort=pushed&per_page=30`)
+    ]);
+    if(!uRes.ok) throw new Error('API error');
+    const user = await uRes.json();
+    const repos = rRes.ok ? await rRes.json() : [];
+
+    /* Profile */
+    if(user.name) $('hero-name').textContent = user.name;
+    if(user.bio)  $('hero-bio').textContent  = user.bio;
+    if(user.avatar_url) $('avatar-el').innerHTML = `<img src="${user.avatar_url}" alt="avatar">`;
+    $('s-repos').textContent     = user.public_repos ?? '—';
+    $('s-followers').textContent = user.followers     ?? '—';
+    $('s-following').textContent = user.following     ?? '—';
+
+    if(user.blog) {
+      const url = user.blog.startsWith('http') ? user.blog : 'https://'+user.blog;
+      const idx = CONTACTS.findIndex(c=>c.l==='Email');
+      if(idx>=0){ CONTACTS[idx].l='Website'; CONTACTS[idx].v=user.blog; CONTACTS[idx].url=url; }
+    }
+    if(user.email) {
+      const idx = CONTACTS.findIndex(c=>c.l==='Email'||c.l==='Website');
+      if(idx>=0 && !user.blog){ CONTACTS[idx].v=user.email; }
+    }
+
+    /* Repos → Projects */
+    const pg = $('projects-grid');
+    pg.innerHTML = '';
+    const filtered = Array.isArray(repos) ? repos.filter(r=>!r.fork) : [];
+    const toShow = (filtered.length ? filtered : repos).slice(0, 12);
+
+    if(!toShow.length){
+      pg.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text3);padding:40px;font-size:13px;">No public repositories found. <a href="https://github.com/${GH}" style="color:var(--accent)">Visit GitHub ↗</a></div>`;
+    } else {
+      toShow.forEach((r,i)=>{
+        const lc = LANG_COLORS[r.language] || LANG_COLORS.default;
+        const icon = PROJECT_ICONS[i % PROJECT_ICONS.length];
+        const date = new Date(r.pushed_at||r.updated_at).toLocaleDateString('en',{month:'short',year:'numeric'});
+        const topics = Array.isArray(r.topics) ? r.topics.slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('') : '';
+        pg.innerHTML+=`
+          <div class="proj-card" onclick="window.open('${r.html_url}','_blank')">
+            <div class="proj-header">
+              <div class="proj-icon">${icon}</div>
+              <div class="proj-name">${r.name.replace(/[-_]/g,' ')}</div>
+            </div>
+            <div class="proj-desc">${r.description || 'No description provided — click to explore on GitHub.'}</div>
+            <div class="proj-tags">
+              ${r.language?`<span class="tag lang" style="color:${lc};border-color:${lc}40;background:${lc}18">${r.language}</span>`:''}
+              ${topics}
+            </div>
+            <div class="proj-foot">
+              <span>⭐ ${r.stargazers_count}</span>
+              <span>🍴 ${r.forks_count}</span>
+              <span>🕐 ${date}</span>
+              <a class="proj-link" href="${r.html_url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">View ↗</a>
+            </div>
+          </div>`;
+      });
+    }
+
+    /* Language bars */
+    const langs = {};
+    repos.forEach(r=>{ if(r.language) langs[r.language]=(langs[r.language]||0)+1; });
+    const sorted = Object.entries(langs).sort((a,b)=>b[1]-a[1]).slice(0,7);
+    const total = sorted.reduce((s,[,n])=>s+n,0)||1;
+    const lbars = $('lang-bars');
+    lbars.innerHTML = '';
+    const LCOLORS=['#8b5cf6','#38bdf8','#34d399','#f59e0b','#f43f5e','#a78bfa','#60a5fa'];
+    sorted.forEach(([lang,cnt],i)=>{
+      const pct = Math.round(cnt/total*100);
+      const col = LANG_COLORS[lang] || LCOLORS[i];
+      lbars.innerHTML+=`
+        <div class="lang-bar-wrap">
+          <div class="lang-bar-top">
+            <span class="lang-bar-name">${lang}</span>
+            <span class="lang-bar-pct">${pct}%</span>
+          </div>
+          <div class="lang-bar-track">
+            <div class="lang-bar-fill" data-w="${pct}" style="background:${col};"></div>
+          </div>
+        </div>`;
+    });
+    setTimeout(()=>{
+      document.querySelectorAll('.lang-bar-fill').forEach(el=>{
+        el.style.width = el.dataset.w + '%';
+      });
+    }, 200);
+
+  } catch(err) {
+    $('projects-grid').innerHTML=`
+      <div style="grid-column:1/-1;text-align:center;color:var(--text3);padding:48px;font-size:13px;">
+        <div style="font-size:36px;margin-bottom:12px;">🐙</div>
+        Could not load GitHub data (rate limit or network issue).<br>
+        <a href="https://github.com/${GH}" target="_blank" style="color:var(--accent);margin-top:8px;display:inline-block;">View repos on GitHub ↗</a>
+      </div>`;
+    $('lang-bars').innerHTML=`<div style="color:var(--text3);font-size:13px;">Could not load language data.</div>`;
+  }
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', ()=>{
+  const loader = $('loader');
+  setTimeout(()=>{
+    loader.style.opacity='0';
+    setTimeout(()=>{ loader.style.display='none'; }, 700);
+  }, 1600);
+  loadGitHub();
+});
+</script>
+</body>
+</html>
