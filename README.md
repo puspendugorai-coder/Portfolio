@@ -7,7 +7,7 @@
 
 ### 🌐 Live Portfolio
 
-[![Click here to access](https://img.shields.io/badge/🚀%20Click%20here%20to%20access-My%20Portfolio-8b5cf6?style=for-the-badge&logoColor=white&labelColor=0d0d1f)](https://puspendugorai-coder.github.io/Portfolio/)
+[![Click here to access](https://img.shields.io/badge/🚀%20Click%20here%20to%20access-My%20Portfolio-8b5cf6?style=for-the-badge&logoColor=white&labelColor=0d0d1f-code)](https://puspendugorai-coder.github.io/Portfolio/)
 
 ---
 
