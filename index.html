@@ -305,8 +305,11 @@ section{padding:clamp(60px,8vw,96px) clamp(16px,4vw,32px);max-width:980px;margin
 .rs-preview-dot:nth-child(2){background:var(--a4);}
 .rs-preview-dot:nth-child(3){background:var(--a3);}
 .rs-preview-name{margin-left:8px;font-size:11px;color:var(--tx3);font-family:var(--fm);}
-.rs-preview-frame{flex:1;background:#fff;}
-.rs-preview-frame iframe{width:100%;height:100%;border:none;display:block;min-height:420px;}
+.rs-preview-frame{flex:1;background:#fff;position:relative;}
+.rs-preview-frame iframe{width:100%;height:100%;border:none;display:block;min-height:420px;position:relative;z-index:1;}
+.rs-preview-fallback{position:absolute;inset:0;background:var(--cb);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:2;}
+.rs-preview-fallback.show{display:flex;}
+.rs-preview-fallback p{font-size:13px;color:var(--tx3);max-width:240px;}
 @media(max-width:760px){.rs-preview{display:none;}}
 
 
@@ -361,9 +364,11 @@ footer strong{color:var(--a1);}
   <div class="nav-logo">Puspendu Gorai <span class="ndot"></span></div>
   <div class="nav-links">
     <a data-s="hero"         onclick="goTo('hero')">Home</a>
+    <a data-s="about"        onclick="goTo('about')">About</a>
     <a data-s="skills"       onclick="goTo('skills')">Skills</a>
     <a data-s="projects"     onclick="goTo('projects')">Projects</a>
     <a data-s="achievements" onclick="goTo('achievements')">Achievements</a>
+    <a data-s="resume"       onclick="goTo('resume')">Resume</a>
     <a data-s="contact"      onclick="goTo('contact')">Contact</a>
   </div>
   <div class="nav-r">
@@ -381,9 +386,11 @@ footer strong{color:var(--a1);}
 <!-- MOBILE MENU -->
 <div id="mob-menu">
   <a data-s="hero"         onclick="goTo('hero');closeMenu()">🏠 Home</a>
+  <a data-s="about"        onclick="goTo('about');closeMenu()">🙋 About</a>
   <a data-s="skills"       onclick="goTo('skills');closeMenu()">⚡ Skills</a>
   <a data-s="projects"     onclick="goTo('projects');closeMenu()">🚀 Projects</a>
   <a data-s="achievements" onclick="goTo('achievements');closeMenu()">🏆 Achievements</a>
+  <a data-s="resume"       onclick="goTo('resume');closeMenu()">📄 Resume</a>
   <a data-s="contact"      onclick="goTo('contact');closeMenu()">✉️ Contact</a>
 </div>
 
@@ -405,7 +412,7 @@ footer strong{color:var(--a1);}
       <div class="av-halo-blur"></div>
       <div class="av-halo"></div>
       <div class="av-bg"></div>
-      <div class="av-img" id="av-el">PG</div>
+      <div class="av-img" id="av-el"><img src="assets/puspendu.jpg" alt="Puspendu Gorai"></div>
       <div class="av-dot"></div>
     </div>
     <div class="hero-badge"><span class="bdot"></span>Available for opportunities</div>
@@ -419,11 +426,40 @@ footer strong{color:var(--a1);}
     </div>
     <div class="hero-btns">
       <button class="btn btn-p" onclick="rip(event);goTo('projects')">View Projects ↓</button>
+      <a class="btn btn-o" href="resume.pdf" download="Puspendu_Gorai_Resume.pdf" onclick="rip(event)">Download Resume ⬇</a>
       <button class="btn btn-o" onclick="rip(event);goTo('contact')">Contact Me</button>
-      <a class="btn btn-o" href="https://github.com/puspendugorai-coder" target="_blank" rel="noopener" onclick="rip(event)">GitHub ↗</a>
     </div>
   </div>
 </div>
+
+<!-- ABOUT -->
+<section id="about" class="reveal">
+  <div class="sec-head">
+    <div class="sec-tag">Get to know me</div>
+    <h2 class="sec-title">About Me</h2>
+    <p class="sec-sub">A bit about who I am and what I'm building toward</p>
+    <div class="sec-line"></div>
+  </div>
+  <div class="ab-layout">
+    <div class="ab-photo-wrap">
+      <div class="ab-photo-glow"></div>
+      <div class="ab-photo-card">
+        <img src="assets/puspendu.jpg" alt="Puspendu Gorai"/>
+        <div class="ab-photo-tag">🟢 Open to internships</div>
+      </div>
+    </div>
+    <div class="ab-text">
+      <p>Hi, I'm <strong>Puspendu Gorai</strong> — a developer from West Bengal, India, currently in my <strong>3rd year of B.Tech in Computer Science &amp; Engineering (AI &amp; ML) at Brainware University</strong>. I enjoy turning ideas into working products, from full-stack web apps to AI-powered tools.</p>
+      <p>My day-to-day toolkit spans <strong>HTML, CSS, JavaScript, React and Node.js</strong> on the front end, with <strong>Python, Flask and SQL</strong> on the back end. Lately I've been going deeper into <strong>AI/ML — LLMs, RAG pipelines and Hugging Face</strong> — building things like an AI resume analyzer and a programming chatbot.</p>
+      <p>I learn best by shipping: every project on my GitHub is something I built end-to-end, broke, fixed, and pushed live. I'm now looking for an internship where I can bring that same hands-on energy to a real product team.</p>
+      <div class="ab-highlights">
+        <div class="ab-hl"><b>🎓</b> B.Tech CSE (AI &amp; ML), Brainware University</div>
+        <div class="ab-hl"><b>📍</b> West Bengal, India</div>
+        <div class="ab-hl"><b>💼</b> Seeking Internship Opportunities</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- SKILLS -->
 <section id="skills" class="reveal">
@@ -461,6 +497,46 @@ footer strong{color:var(--a1);}
     <div class="sec-line"></div>
   </div>
   <div class="ach-grid" id="ach-grid"></div>
+</section>
+
+<!-- RESUME -->
+<section id="resume" class="reveal">
+  <div class="sec-head">
+    <div class="sec-tag">My Resume</div>
+    <h2 class="sec-title">Download My Resume</h2>
+    <p class="sec-sub">A one-page summary of my education, skills &amp; projects</p>
+    <div class="sec-line"></div>
+  </div>
+  <div class="rs-layout">
+    <div class="rs-card">
+      <div class="rs-card-ico">📄</div>
+      <h3>Puspendu Gorai — Resume</h3>
+      <p>Includes my education at Brainware University, technical skills across web development and AI/ML, featured projects, and achievements. Updated for internship applications.</p>
+      <div class="rs-btns">
+        <a class="btn btn-p" href="resume.pdf" download="Puspendu_Gorai_Resume.pdf" onclick="rip(event)">Download PDF ⬇</a>
+        <a class="btn btn-o" href="resume.pdf" target="_blank" rel="noopener" onclick="rip(event)">View Full Screen ↗</a>
+      </div>
+      <div class="rs-meta">
+        <div class="rs-meta-item"><b>📁</b> PDF format</div>
+        <div class="rs-meta-item"><b>📏</b> 1 page</div>
+        <div class="rs-meta-item"><b>🕒</b> Updated 2026</div>
+      </div>
+    </div>
+    <div class="rs-preview">
+      <div class="rs-preview-bar">
+        <span class="rs-preview-dot"></span><span class="rs-preview-dot"></span><span class="rs-preview-dot"></span>
+        <span class="rs-preview-name">resume.pdf</span>
+      </div>
+      <div class="rs-preview-frame">
+        <iframe src="resume.pdf#toolbar=0" title="Puspendu Gorai Resume Preview" id="resume-frame"></iframe>
+        <div class="rs-preview-fallback" id="resume-fallback">
+          <div style="font-size:34px;margin-bottom:10px;">📄</div>
+          <p>Preview isn't available in this browser.</p>
+          <a class="btn btn-p" href="resume.pdf" target="_blank" rel="noopener" style="margin-top:14px;">Open Resume ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- LANGUAGES -->
@@ -734,7 +810,7 @@ const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.targ
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
 /* ── SCROLL SPY ── */
-const SECS=['hero','skills','projects','achievements','languages','contact'];
+const SECS=['hero','about','skills','projects','achievements','resume','languages','contact'];
 const nls=document.querySelectorAll('.nav-links a[data-s],#mob-menu a[data-s]');
 function upNav(){
   const mid=window.innerHeight*.35;let cur=SECS[0];
@@ -755,7 +831,7 @@ const ag=$('ach-grid');
 ACHS.forEach(a=>{ag.innerHTML+=`<div class="ach-card"><span class="ach-ico">${a.i}</span><div class="ach-nm">${a.n}</div><div class="ach-ds">${a.d}</div></div>`;});
 
 /* ── CONTACTS ── */
-const CTS=[{i:'🐙',l:'GitHub',v:'puspendugorai-coder',url:'https://github.com/puspendugorai-coder'},{i:'📍',l:'Location',v:'West Bengal, India',url:null},{i:'📧',l:'Email',v:'Via GitHub profile',url:'https://github.com/puspendugorai-coder'},{i:'🤝',l:'Open To',v:'Collaborations & Roles',url:null}];
+const CTS=[{i:'📧',l:'Email',v:'puspendugorai74@gmail.com',url:'mailto:puspendugorai74@gmail.com'},{i:'📱',l:'Phone',v:'+91 85091 51922',url:'tel:+918509151922'},{i:'💼',l:'LinkedIn',v:'puspendu-gorai',url:'https://www.linkedin.com/in/puspendu-gorai-1b4ba9311/'},{i:'🐙',l:'GitHub',v:'puspendugorai-coder',url:'https://github.com/puspendugorai-coder'},{i:'📍',l:'Location',v:'West Bengal, India',url:null}];
 const ci=$('ct-info');
 CTS.forEach(c=>{const t=c.url?'a':'div';ci.innerHTML+=`<${t} class="ct-lc" ${c.url?`href="${c.url}" target="_blank" rel="noopener"`:''}><div class="ct-ico">${c.i}</div><div><div class="ct-lb">${c.l}</div><div class="ct-vl">${c.v}</div></div></${t}>`;});
 
@@ -767,7 +843,7 @@ function sendMsg(e){
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){st.className='err';st.textContent='Please enter a valid email address.';return;}
   const b=encodeURIComponent(`Hi Puspendu,\n\n${mg}\n\nFrom: ${nm}\nEmail: ${em}`);
   const s=encodeURIComponent(sb||'Portfolio Contact');
-  window.location.href=`mailto:?subject=${s}&body=${b}`;
+  window.location.href=`mailto:puspendugorai74@gmail.com?subject=${s}&body=${b}`;
   st.className='ok';st.textContent='✓ Opening your email client!';
   $('fn').value='';$('fe').value='';$('fs').value='';$('fm').value='';
 }
@@ -781,9 +857,8 @@ async function loadGH(){
     const[uR,rR]=await Promise.all([fetch(`https://api.github.com/users/${GH}`),fetch(`https://api.github.com/users/${GH}/repos?sort=pushed&per_page=30`)]);
     if(!uR.ok)throw new Error();
     const u=await uR.json(),repos=rR.ok?await rR.json():[];
-    if(u.name)$('hero-name').textContent=u.name;
-    if(u.bio)$('hero-bio').textContent=u.bio;
-    if(u.avatar_url)$('av-el').innerHTML=`<img src="${u.avatar_url}" alt="avatar">`;
+    /* keep real name & bio fixed rather than pulling from GitHub profile fields */
+    /* keep real photo as avatar instead of GitHub avatar_url */
     $('s-repos').textContent=u.public_repos??'—';
     $('s-follow').textContent=u.followers??'—';
     $('s-fwing').textContent=u.following??'—';
@@ -813,7 +888,12 @@ async function loadGH(){
   }
 }
 
-/* ── INIT ── */
+/* ── RESUME PREVIEW FALLBACK ── */
+(function(){
+  const isMobileUA=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if(isMobileUA){const fb=$('resume-fallback');if(fb)fb.classList.add('show');}
+})();
+
 window.addEventListener('DOMContentLoaded',()=>{
   const ld=$('loader');
   setTimeout(()=>{ld.style.opacity='0';setTimeout(()=>{ld.style.display='none';},800);},1900);
