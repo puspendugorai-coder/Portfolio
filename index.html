@@ -413,7 +413,7 @@ footer strong{color:var(--a1);}
       <div class="av-halo-blur"></div>
       <div class="av-halo"></div>
       <div class="av-bg"></div>
-      <div class="av-img" id="av-el"><img src="assets/puspendu.jpg" alt="Puspendu Gorai"></div>
+      <div class="av-img" id="av-el"><img src="https://github.com/puspendugorai-coder.png?size=400" alt="Puspendu Gorai" onerror="this.onerror=null;this.src='assets/puspendu.jpg'"></div>
       <div class="av-dot"></div>
     </div>
     <div class="hero-badge"><span class="bdot"></span>Available for opportunities</div>
@@ -860,7 +860,7 @@ async function loadGH(){
     if(!uR.ok)throw new Error();
     const u=await uR.json(),repos=rR.ok?await rR.json():[];
     /* keep real name & bio fixed rather than pulling from GitHub profile fields */
-    /* keep real photo as avatar instead of GitHub avatar_url */
+    /* hero avatar uses the GitHub profile picture (github.com/<user>.png), with assets/puspendu.jpg as fallback */
     $('s-repos').textContent=u.public_repos??'—';
     $('s-follow').textContent=u.followers??'—';
     $('s-fwing').textContent=u.following??'—';
